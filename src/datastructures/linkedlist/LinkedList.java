@@ -15,8 +15,8 @@ public class LinkedList {
 
     public class Node{
 
-        int value;
-        Node next;
+        public int value;
+        public Node next;
 
         public Node(int value) {
             this.value = value;
@@ -168,6 +168,22 @@ public class LinkedList {
         }
     }
 
+    //reverse for palindrome
+    public Node reverse(Node middleNode){
+
+        Node pre = null;
+        Node temp = middleNode;
+        Node post = middleNode;
+
+        while (post != null){
+            post = post.next;
+            temp.next = pre;
+            pre = temp;
+            temp = post;
+        }
+        return pre;
+    }
+
     public void printList(){
         System.out.println("Printing List :: ");
 
@@ -178,15 +194,96 @@ public class LinkedList {
         }
     }
 
+    public Node findMiddleNode(){
+        Node fast = head;
+        Node slow = head;
+
+        while(fast != null){
+            if(fast.next != null){
+                slow = slow.next;
+                fast = fast.next.next;
+            } else {
+                fast = null;
+            }
+        }
+
+        System.out.println("Middle of the Linked List :: "+ slow.value);
+        return  slow;
+    }
+
+    public boolean hasLoop() {
+
+        Node fast = head;
+        Node slow = head;
+
+        while(fast != null){
+
+            if(fast.next != null){
+                slow = slow.next;
+                fast = fast.next.next;
+
+                if(slow == fast){
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public Node removeDuplicateNodes(int value){
+
+        if(head == null) return head;
+
+        while(head != null && head.value == value){
+            head = head.next;
+            if(head == null){
+                return null;
+            }
+        }
+
+        Node temp = head;
+
+        while(temp.next != null){
+            if(temp.next.value == value){
+                temp.next = temp.next.next;
+            } else {
+                temp = temp.next;
+            }
+        }
+
+        return head;
+    }
+
+    public boolean isPalindrome(){
+
+        Node firstHalfStart = head;
+        Node middleNode = findMiddleNode();
+        Node secondHalfStart = reverse(middleNode);
+
+        while (secondHalfStart != null){
+            if(firstHalfStart.value != secondHalfStart.value){
+                System.out.println("Not palindrome");
+                return false;
+            }
+            firstHalfStart = firstHalfStart.next;
+            secondHalfStart = secondHalfStart.next;
+        }
+
+        System.out.println("Its palindrome");
+        return true;
+    }
+
     public void getLength() {
         System.out.println("Length :: " + length);
     }
 
-    public void getHead() {
-        System.out.println("Head :: " + head.value);
+    public Node getHead() {
+        return head;
     }
 
-    public void getTail() {
-        System.out.println("Tail :: " + tail.value);
+    public Node getTail() {
+        return tail;
     }
 }
